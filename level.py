@@ -142,8 +142,8 @@ class Level:
                     sprite = Player((x, y), self.display_surface, self.create_jump_particles, change_health)
                     self.player.add(sprite)
                 if val == '1':
-                    carrot_surface = pygame.image.load('./graphics/character_witch/pumpkin.png').convert_alpha()
-                    sprite = StaticTile(tile_size, x, y, carrot_surface)
+                    goal_surface = pygame.image.load('./graphics/character_dino/avocado.png').convert_alpha()
+                    sprite = StaticTile(tile_size, x, y, goal_surface)
                     self.goal.add(sprite)
 
     def enemy_collision_reverse(self):
@@ -176,24 +176,17 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed
+        player.collision_rect.x += player.direction.x * player.speed
         collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites()
 
         for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
+                    player.collision_rect.left = sprite.rect.right
                     player.on_left = True
-                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
+                    player.collision_rect.right = sprite.rect.left
                     player.on_right = True
-                    self.current_x = player.rect.right
-
-        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
-            player.on_left = False
-        if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
-            player.on_right = False
 
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -201,20 +194,18 @@ class Level:
         collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites()
 
         for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
+                    player.collision_rect.bottom = sprite.rect.top
                     player.direction.y = 0
                     player.on_ground = True
                 elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
+                    player.collision_rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
-        if player.on_ceiling and player.direction.y > 0.1:
-            player.on_ceiling = False
 
     def get_player_on_ground(self):
         if self.player.sprite.on_ground:
@@ -276,6 +267,10 @@ class Level:
         self.fg_palm_sprites.update(self.world_shift)
         self.fg_palm_sprites.draw(self.display_surface)
 
+        # dust particles
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.display_surface)
+
         # terrain
         self.terrain_sprites.update(self.world_shift)
         self.terrain_sprites.draw(self.display_surface)
@@ -299,10 +294,6 @@ class Level:
         # coins
         self.coin_sprites.update(self.world_shift)
         self.coin_sprites.draw(self.display_surface)
-
-        # dust particles
-        self.dust_sprite.update(self.world_shift)
-        self.dust_sprite.draw(self.display_surface)
 
         # player sprites
         self.player.update()
