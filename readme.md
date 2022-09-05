@@ -6,7 +6,7 @@ https://www.youtube.com/playlist?list=PL8ui5HK3oSiGXM2Pc2DahNu1xXBf7WQh-
 
 ## Work in progress
 
-### 5. September 2022
+### 5th of September 2022
 Added basic game logic
 
 ## Sources:
