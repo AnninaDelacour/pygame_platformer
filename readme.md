@@ -12,7 +12,7 @@ Added basic game logic
 ## Sources:
 <b>Images</b>:
 * <i>Clear Code</i> Assets/Sounds
-* <i>OpenGamerArt</i> (https://opengameart.org)
+* <i>OpenGameArt</i> (https://opengameart.org)
 * <i>Itch.io</i> (https://itch.io/game-assets)
 
 
